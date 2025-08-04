@@ -19,9 +19,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
-        run: npm install
-
       - name: Get private redirects.json
         env:
           TOKEN: ${{ secrets.REDIRECTS_REPO_TOKEN }} # must be set in repo/org secrets
