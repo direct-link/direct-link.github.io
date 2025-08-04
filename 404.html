@@ -11,6 +11,9 @@
     if (target && /^https?:\/\//.test(target) && new URL(target).hostname !== location.hostname) {
       location.replace(target);
     } else {
+      if (target) {
+        console.log(`Unable to replace with: ${target}`);
+      }
       location.replace(homepage);
     }
   </script>
