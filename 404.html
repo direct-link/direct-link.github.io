@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting...</title>
+  <script src="/redirects.js"></script>
+  <script>
+    var shortKey = window.location.pathname.split("/")[1];
+    var homepage = location.origin + "/";
+    var target = window.__LOOKUP_FUNC__(shortKey); <!-- Placeholder -->
+    if (target && /^https?:\/\//.test(target) && new URL(target).hostname !== location.hostname) {
+      location.replace(target);
+    } else {
+      location.replace(homepage);
+    }
+  </script>
+</head>
+<body></body>
+</html>

@@ -1,0 +1,52 @@
+name: Update Redirects
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # every 6 hours
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout page branch
+        uses: actions/checkout@v4
+        with:
+          ref: page
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Get private redirects.json
+        env:
+          TOKEN: ${{ secrets.REDIRECTS_REPO_TOKEN }} # must be set in repo/org secrets
+          REDIRECTS_URL: ${{ secrets.REDIRECTS_URL }} # must be set in repo/org secrets - E.g. someAccount/someRepo
+        run: |
+          curl -sSL -H "Authorization: token ${TOKEN}" \
+            "https://raw.githubusercontent.com/${REDIRECTS_URL}/main/redirects.json" \
+            -o redirects.json
+
+      - name: Run redirect generator
+        run: node .github/scripts/generate-redirects.js
+
+      - name: Remove sensitive/unnecessary files
+        run: |
+          rm -f redirects.json
+          rm -f README.md
+          rm -f LICENSE
+          rm -f .gitignore
+          rm -rf .github
+          rm -rf .idea
+
+      - name: Commit and push changes to page branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update obfuscated redirects"
+          git push origin page
