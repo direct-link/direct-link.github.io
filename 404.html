@@ -7,7 +7,7 @@
   <script>
     var shortKey = window.location.pathname.split("/")[1];
     var homepage = location.origin + "/";
-    var target = window.__LOOKUP_FUNC__(shortKey); <!-- Placeholder -->
+    var target = window._CqiOqvVOhtZY(shortKey); <!-- Placeholder -->
     if (target && /^https?:\/\//.test(target) && new URL(target).hostname !== location.hostname) {
       location.replace(target);
     } else {
