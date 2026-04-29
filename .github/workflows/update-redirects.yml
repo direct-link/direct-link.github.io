@@ -1,8 +1,8 @@
 name: Update Redirects
 
 on:
-  schedule:
-    - cron: "0 */6 * * *" # every 6 hours
+  #schedule:
+  #  - cron: "0 */6 * * *" # every 6 hours
   workflow_dispatch: # allow manual trigger
   push: # Trigger when updating code
     branches:
